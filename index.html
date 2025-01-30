@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTH1W Provincial Assessment Pseudocode Interpreter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ccc;
+            overflow: auto;
+        }
+        .glossary {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .glossary h2 {
+            margin-top: 0;
+        }
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        td pre {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>MTH1W: Provincial Assessment of Mathematics Pseudocode Interpreter</h1>
+    <p>by <a href="mailto:roxasm@tcdsb.org">Mark Roxas</a>. <i>Last updated: Jan-29-2025</i></p>
+    <p>This tool allows you to run code inputted using the same format and commands (see Glossary of commands below) as written in the pseudocode of the Grade 9 Provincal Assessment of Mathematics for MTH1W. 
+    Please make sure javascript is enabled on your computer or mobile device. You will also find pseudocode samples from released assessment questions and sample lessons you can use to implement this tool. 
+    For educational purposes only!</p>
+    <textarea id="pseudocodeInput" placeholder="Enter your pseudocode here..."></textarea>
+    <button onclick="runInterpreter()">Run</button>
+    <h2>Output:</h2>
+    <pre id="output"></pre>
+
+    <div class="glossary">
+        <h2>Glossary of Commands</h2>
+        <p><strong>set &lt;variable&gt; = &lt;value&gt;</strong>: Define a variable and assign it a value.</p>
+        <p><strong>store user input as &lt;variable&gt;</strong>: Prompt the user to enter a value, then store it in the specified variable.</p>
+        <p><strong>store input as &lt;variable&gt;</strong>: Prompt the user to enter a value, then store it in the specified variable.</p>
+        <p><strong>output &lt;text&gt;, &lt;variable&gt;</strong>: Print a combination of text and variables. Text must be enclosed in double quotes ("").</p>
+        <p><strong>if &lt;condition&gt;</strong>: Start a conditional block. The block executes only if the condition evaluates to true.</p>
+        <p><strong>else</strong>: Define an alternate block to execute if the preceding <strong>if</strong> condition is false.</p>
+        <p><strong>end</strong>: Close an <strong>if</strong> or <strong>else</strong> block.</p>
+        <p><strong>Arithmetic Expressions:</strong> Use standard arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>^</code>) in expressions to calculate values.</p>
+    </div>
+
+        <h2>Released Provincial Assessment Pseudocode</h2>
+    Copy and paste the snippets of pseudocode into the interpreter and run the code. You can also modify the code to alter the output.
+    <table>
+        <tr>
+            <th>Sample 1 (Sample Test 2024-2025)</th>
+        </tr>
+        <tr>
+            <td>
+                <pre>
+set number = 0 
+output "Enter a number."
+store user input as number
+stepOne = number ^ 2
+stepTwo = 3 * stepOne - 4
+output stepTwo
+                </pre>
+            </td>
+            </tr>
+        <tr>
+            <th>Sample 2 (Released Question 2023)</th>
+        </tr>
+        <tr>
+            <td>
+                <pre>
+rateOfChange = -4
+initialValue = 12
+output "Enter the x-coordinate of the point."
+store user input as xInput
+output "Enter the y-coordinate of the point."
+store user input as yInput
+yValue = rateOfChange * xInput + initialValue
+if yInput > yValue
+output "The point is above the line"
+else
+output "The point is not above the line."
+                </pre>
+            </td>
+               </tr>
+                <tr>
+            <th>Sample 3 (Released Question 2023)</th>
+           </tr>
+        <tr>
+            <td>
+                <pre>
+variableB = 0
+variableC = 0
+output "Enter the value of variable B."
+store input as variableB
+output "Enter the value of variable C."
+store input as variableC
+variableA = ((5 * variableC) - variableB)/4
+output "The value of variable A is ", variableA, "."
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <th>Sample 4 (2024-2025 Sample Test)</th>
+           </tr>
+        <tr>
+            <td>
+                <pre>
+amount = 0
+interest = 0
+output "Enter initial amount."
+store user input as amount
+output "Enter the simple interest rate as a percentage."
+store user input as interest
+finalAmount = amount + (amount * interest/100 * 5)
+output "The final amount at the end of 5 years ", finalAmount, "."
+                </pre>
+            </td>       
+        </tr>
+        <tr> <th>Sample 5 (2024-2025 Sample Test - Alternative Version)</th></tr>
+        <tr>
+            <td>
+                <pre>
+set numberOfPlayers = 0
+set fullScore = 0
+output "How many players played in the game?"
+store user input as numberOfPlayers    
+output "How many points were scored in the game?"
+store user input as fullScore    
+variable =  fullScore  / numberOfPlayers
+                </pre>
+            </td>
+        </tr>
+    </table>
+    
+    <div class="lessons">
+        <h2>Sample Lessons</h2>
+        <p><strong>Lesson 1</strong>: Coming soon!</p>
+
+    </div>
+    
+    <script src="interpreter.js"></script>
+
+   
+</body>
+</html>
