@@ -175,10 +175,12 @@ function interpretCommand(command) {
         }
     
         // ✅ FIX: Properly handle negative & decimal exponents in expressions
-        trimmedExpression = trimmedExpression.replace(/(-?\d+(\.\d+)?|\w+)\s*\^\s*(-?\d+(\.\d+)?|\w+)/g, (_, base, _, exponent) => {
-            return `Math.pow(${base}, ${exponent})`;
-        });
-    
+        // trimmedExpression = trimmedExpression.replace(/(-?\d+(\.\d+)?|\w+)\s*\^\s*(-?\d+(\.\d+)?|\w+)/g, (_, base, _, exponent) => {
+          //  return `Math.pow(${base}, ${exponent})`;
+        // });
+        // Replace `^` with `Math.pow` syntax
+        trimmedExpression = trimmedExpression.replace(/(\d+|\w+)\s*\^\s*(\d+|\w+)/g, (_, base, exponent) => `Math.pow(${base}, ${exponent})`);
+
         try {
             variables[trimmedVarName] = eval(trimmedExpression);
             outputElement.textContent += `Set variable '${trimmedVarName}' to ${variables[trimmedVarName]}\n`;
