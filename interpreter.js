@@ -6,8 +6,8 @@ let loopStack = [];
 function interpretCommand(command) {
     const outputElement = document.getElementById('output');
 
-    // if (skipExecution && !command.startsWith("else") && !command.startsWith("end")) {
-    if (skipExecution && !command.startsWith("else")) {
+    if (skipExecution && !command.startsWith("else") && !command.startsWith("end")) {
+    // if (skipExecution && !command.startsWith("else")) {
         return;
     }
 
@@ -144,15 +144,19 @@ function interpretCommand(command) {
     }
 
     // Handle "end"
-    // else if (command.startsWith("end")) {
-       // if (blockStack.length === 0) {
-         //   outputElement.textContent += `Error: 'end' without matching 'if'.\n`;
-           // return;
-        // }
+    else if (command.startsWith("end")) {
+        // Prevent "end" from executing inside a loop
+        if (loopStack.length > 0) {
+            return; // Do nothing if inside a loop
+        }
+       if (blockStack.length === 0) {
+            outputElement.textContent += `Error: 'end' without matching 'if'.\n`;
+            return;
+         }
 
-        // blockStack.pop();
-        // skipExecution = blockStack.some(block => !block.condition);
-    // }
+         blockStack.pop();
+         skipExecution = blockStack.some(block => !block.condition);
+    }
 
     // Handle "output"
     else if (command.startsWith("output")) {
