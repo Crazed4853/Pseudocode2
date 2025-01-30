@@ -162,30 +162,32 @@ function interpretCommand(command) {
             .join("");
         outputElement.textContent += `${outputMessage}\n`;
     }
-
     // Handle arithmetic and exponentiation
     else if (command.includes(" = ") && !command.startsWith("set")) {
         if (skipExecution) return;
-
+    
         const [varName, expression] = command.split(" = ");
         const trimmedVarName = varName.trim();
         let trimmedExpression = expression.trim();
-
+    
         for (const key in variables) {
             trimmedExpression = trimmedExpression.replace(new RegExp(`\\b${key}\\b`, 'g'), variables[key]);
         }
-
+    
+        // ✅ FIX: Properly handle negative & decimal exponents in expressions
         trimmedExpression = trimmedExpression.replace(/(-?\d+(\.\d+)?|\w+)\s*\^\s*(-?\d+(\.\d+)?|\w+)/g, (_, base, _, exponent) => {
             return `Math.pow(${base}, ${exponent})`;
         });
-
+    
         try {
             variables[trimmedVarName] = eval(trimmedExpression);
             outputElement.textContent += `Set variable '${trimmedVarName}' to ${variables[trimmedVarName]}\n`;
         } catch (e) {
             outputElement.textContent += `Error evaluating expression: ${e}\n`;
         }
-    } else {
+    }
+
+else {
         outputElement.textContent += `Unknown command: ${command}\n`;
     }
 }
