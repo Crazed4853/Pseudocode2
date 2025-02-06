@@ -163,23 +163,26 @@ function interpretCommand(command) {
         if (skipExecution) return;
     
         const argument = command.substring(7).trim(); // Extract text after "output"
-        
+    
         try {
-            // ✅ Fix: Preserve commas inside quoted strings
-            const regex = /"([^"]*)"|(\S+)/g; 
-            const components = [];
+            let outputMessage = "";
+            let regex = /"([^"]*)"|([^,\s]+)/g; // Match quoted text or variables
             let match;
-            
+    
             while ((match = regex.exec(argument)) !== null) {
-                components.push(match[1] !== undefined ? match[1] : match[2]);
+                if (match[1] !== undefined) {
+                    // ✅ Preserve quoted strings exactly
+                    outputMessage += match[1];
+                } else {
+                    // ✅ Replace variables with their values
+                    let variableName = match[2];
+                    outputMessage += variables.hasOwnProperty(variableName) ? variables[variableName] : variableName;
+                }
+    
+                outputMessage += " "; // Add space between parts
             }
     
-            // ✅ Join components to form the final message
-            const outputMessage = components
-                .map(part => variables.hasOwnProperty(part) ? variables[part] : part)
-                .join(" ");
-    
-            outputElement.textContent += `${outputMessage}\n`;
+            outputElement.textContent += `${outputMessage.trim()}\n`;
         } catch (e) {
             outputElement.textContent += `Error processing output: ${e.message}\n`;
         }
