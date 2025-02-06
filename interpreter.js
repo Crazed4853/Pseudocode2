@@ -167,6 +167,16 @@ function interpretCommand(command) {
             .join("");
         outputElement.textContent += `${outputMessage}\n`;
     }
+
+     // Handle "display"
+    else if (command.startsWith("display")) {
+        const argument = command.substring(7).trim();
+        const components = argument.split(",").map(component => component.trim());
+        const outputMessage = components
+            .map(part => (part.startsWith('"') && part.endsWith('"')) ? part.slice(1, -1) : (variables[part] !== undefined ? variables[part] : `Error: Variable '${part}' not defined.`))
+            .join("");
+        outputElement.textContent += `${outputMessage}\n`;
+    }
     // Handle arithmetic and exponentiation
     else if (command.includes(" = ") && !command.startsWith("set")) {
         if (skipExecution) return;
