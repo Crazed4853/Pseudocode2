@@ -160,12 +160,29 @@ function interpretCommand(command) {
 
     // Handle "output"
     else if (command.startsWith("output")) {
-        const argument = command.substring(7).trim();
-        const components = argument.split(",").map(component => component.trim());
-        const outputMessage = components
-            .map(part => (part.startsWith('"') && part.endsWith('"')) ? part.slice(1, -1) : (variables[part] !== undefined ? variables[part] : `Error: Variable '${part}' not defined.`))
-            .join("");
-        outputElement.textContent += `${outputMessage}\n`;
+        if (skipExecution) return;
+    
+        const argument = command.substring(7).trim(); // Extract text after "output"
+        
+        try {
+            // ✅ Fix: Preserve commas inside quoted strings
+            const regex = /"([^"]*)"|(\S+)/g; 
+            const components = [];
+            let match;
+            
+            while ((match = regex.exec(argument)) !== null) {
+                components.push(match[1] !== undefined ? match[1] : match[2]);
+            }
+    
+            // ✅ Join components to form the final message
+            const outputMessage = components
+                .map(part => variables.hasOwnProperty(part) ? variables[part] : part)
+                .join(" ");
+    
+            outputElement.textContent += `${outputMessage}\n`;
+        } catch (e) {
+            outputElement.textContent += `Error processing output: ${e.message}\n`;
+        }
     }
 
      // Handle "display"
