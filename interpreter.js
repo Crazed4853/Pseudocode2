@@ -71,16 +71,20 @@ function interpretCommand(command) {
             outputElement.textContent += `Error: 'end loop' without matching 'repeat loop'.\n`;
             return;
         }
-
+    
         let loop = loopStack.pop();
-
+    
         if (loop.type === "until") {
             while (true) {
                 let conditionWithValues = loop.condition;
+    
+                // ✅ Replace single '=' with '==' for valid comparisons
+                conditionWithValues = conditionWithValues.replace(/([^=!<>])=([^=])/g, '$1==$2');
+    
                 for (const key in variables) {
                     conditionWithValues = conditionWithValues.replace(new RegExp(`\\b${key}\\b`, 'g'), variables[key]);
                 }
-
+    
                 if (eval(conditionWithValues)) break;
                 for (let cmd of loop.commands) {
                     interpretCommand(cmd);
@@ -88,14 +92,14 @@ function interpretCommand(command) {
             }
         } else if (loop.type === "times") {
             let prevCounter = variables.hasOwnProperty("counter") ? variables["counter"] : undefined;
-
+    
             for (let i = 1; i <= loop.iterations; i++) {
                 variables["counter"] = i;
                 for (let cmd of loop.commands) {
                     interpretCommand(cmd);
                 }
             }
-
+    
             if (prevCounter !== undefined) {
                 variables["counter"] = prevCounter;
             } else {
@@ -103,7 +107,6 @@ function interpretCommand(command) {
             }
         }
     }
-
     // Store commands inside loops
     else if (loopStack.length > 0) {
         loopStack[loopStack.length - 1].commands.push(command);
