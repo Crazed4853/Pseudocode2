@@ -119,6 +119,9 @@ function interpretCommand(command) {
 
         try {
             let conditionWithValues = condition;
+
+            // ✅ Replace single '=' with '==' for valid comparisons in if conditions
+            conditionWithValues = conditionWithValues.replace(/([^=!<>])=([^=])/g, '$1==$2');
             for (const key in variables) {
                 conditionWithValues = conditionWithValues.replace(new RegExp(`\\b${key}\\b`, 'g'), variables[key]);
             }
