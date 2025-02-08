@@ -210,7 +210,19 @@ function interpretCommand(command) {
         const [varName, expression] = command.split(" = ");
         const trimmedVarName = varName.trim();
         let trimmedExpression = expression.trim();
+        
+        // ✅ Handle user input: "variable = input 'Prompt text'"
+        let inputMatch = expression.match(/^input\s+"([^"]*)"$/);
+        if (inputMatch) {
+            let promptText = inputMatch[1]; // Extract the text inside quotes
+            let userInput = window.prompt(promptText); // Display prompt to user
     
+            // Convert input to a number if possible
+            variables[varName] = isNaN(userInput) ? userInput : parseFloat(userInput);
+            outputElement.textContent += `Stored input for '${varName}' with value ${variables[varName]}\n`;
+            return;
+        }
+        
         for (const key in variables) {
             trimmedExpression = trimmedExpression.replace(new RegExp(`\\b${key}\\b`, 'g'), variables[key]);
         }
