@@ -36,12 +36,11 @@ function interpretCommand(command) {
         variables[varName] = value;
         outputElement.textContent += `Stored input for '${varName}' with value ${value}\n`;
 
-    // ✅ Manually reassign the variable inside the loop stack
+    // ✅ Ensure loop conditions are re-evaluated immediately
     if (loopStack.length > 0) {
-        let loop = loopStack[loopStack.length - 1];
-
-        // ✅ Ensure the loop condition updates dynamically
-        loop.condition = loop.condition.replace(new RegExp(`\\b${varName}\\b`, 'g'), variables[varName]);
+        loopStack[loopStack.length - 1].condition = loopStack[loopStack.length - 1].condition.replace(
+            new RegExp(`\\b${varName}\\b`, 'g'), variables[varName]
+        );
     }
 
 
