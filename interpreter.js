@@ -35,7 +35,15 @@ function interpretCommand(command) {
         const value = isNaN(userInput) ? userInput : parseFloat(userInput);
         variables[varName] = value;
         outputElement.textContent += `Stored input for '${varName}' with value ${value}\n`;
+
+    // ✅ Manually reassign the variable inside the loop stack
+    if (loopStack.length > 0) {
+        let loop = loopStack[loopStack.length - 1];
+
+        // ✅ Ensure the loop condition updates dynamically
+        loop.condition = loop.condition.replace(new RegExp(`\\b${varName}\\b`, 'g'), variables[varName]);
     }
+
 
      // Handle "store input as" command
     else if (command.startsWith("store input as")) {
